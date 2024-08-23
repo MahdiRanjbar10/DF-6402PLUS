@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/app_styles.css">
+    <title>مدیریت پیغام کاربر</title>
+</head>
+<body>
+<div class="linear-layout-vertical">
+    <div class="text-view" style="color: #fc0000; width: 300px;">در حال حاضر ضبط پیغام کاربر با این نسخه از اپلیکیشن مقدور نمی باشد</div>
+    <div class="linear-layout-horizontal" id="back_button" style="background-color: #514FA1; border-radius: 15px; margin-top: 50px; cursor: pointer;">
+        <img src="../icons/ic_arrow_back.png" alt="back_ic" style="width: 30px; margin-right: 5px;margin-left: 5px;">
+        <div class="text-view" style="color: white; margin-right: 8px;">بازگشت</div>
+    </div>
+</div>
+<script>
+    const backButton = document.getElementById("back_button");
+    backButton.addEventListener("click",function () {
+        window.history.back();
+    });
+</script>
+
+</body>
+</html>
