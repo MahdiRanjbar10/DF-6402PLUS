@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/app_styles.css">
+    <title>تنظیمات</title>
+</head>
+<body>
+
+<div class="linear-layout-vertical">
+    <div class="text-view" style="margin-bottom: 10px; color: white;" id="showSelectedDevice">null</div>
+    <div class="settings_card_item" id="cvManagePhoneNumbers">مدیریت شماره تلفن های داخل حافظه دزدگیر</div>
+    <div class="settings_card_item" id="cvManageRemotes">مدیریت ریموت کنترل</div>
+    <div class="settings_card_item" id="cvManageRecordingVoice">مدیریت پیغام کاربر</div>
+    <div class="settings_card_item" id="cvManageAlarmTime">تنظیم زمان آژیر</div>
+    <div class="settings_card_item" id="cvManageAlarmLevel">تنظیم زمان تک آژیر</div>
+    <div class="settings_card_item" id="cvManageControlOutput">مدیریت کانال خروجی</div>
+    <div class="settings_card_item" id="cvManageBluetoothSettings">مدیریت بلوتوث دزدگیر</div>
+    <div class="settings_card_item" id="cvManageZoneOptions">مدیریت زون ها</div>
+    <div class="linear-layout-horizontal" id="back_button" style="background-color: #fbcf1d; border-radius: 15px; margin-top: 50px; cursor: pointer;">
+        <img src="../icons/ic_arrow_back.png" alt="back_ic" style="width: 30px; margin-right: 5px;margin-left: 5px;">
+        <div class="text-view" style="color: white; margin-right: 8px;">بازگشت</div>
+    </div>
+</div>
+
+<script>
+    const cvManagePhoneNumbers = document.getElementById("cvManagePhoneNumbers");
+    const cvManageRemotes = document.getElementById("cvManageRemotes");
+    const cvManageRecordingVoice = document.getElementById("cvManageRecordingVoice");
+    const cvManageAlarmTime = document.getElementById("cvManageAlarmTime");
+    const cvManageAlarmLevel = document.getElementById("cvManageAlarmLevel");
+    const cvManageControlOutput = document.getElementById("cvManageControlOutput");
+    const cvManageBluetoothSettings = document.getElementById("cvManageBluetoothSettings");
+    const cvManageZoneOptions = document.getElementById("cvManageZoneOptions");
+    const showSelectedDevice = document.getElementById("showSelectedDevice");
+    const backButton = document.getElementById("back_button");
+
+    var serializedDevice = getUrlParameter('data');
+    if (serializedDevice === "") {
+        window.location.href = "main_page.html";
+    }else {
+        var selectedDevice = JSON.parse(decodeURIComponent(serializedDevice));
+        showSelectedDevice.innerText =  selectedDevice.name + " : دستگاه انتخابی";
+
+        backButton.addEventListener("click",function () {
+            window.history.back();
+        });
+        cvManagePhoneNumbers.addEventListener("click",function () {
+            openPageWithData("manage_phone_numbers.html");
+        });
+        cvManageRemotes.addEventListener("click",function () {
+            openPageWithData("manage_remotes.html");
+        });
+        cvManageRecordingVoice.addEventListener("click",function () {
+            openPageWithData("manage_record_voice.html");
+        });
+        cvManageAlarmTime.addEventListener("click",function () {
+            openPageWithData("manage_alarm_time.html");
+        });
+        cvManageAlarmLevel.addEventListener("click",function () {
+            openPageWithData("manage_alarm_level.html");
+        });
+        cvManageControlOutput.addEventListener("click",function () {
+            openPageWithData("manage_control_output.html");
+        });
+        cvManageBluetoothSettings.addEventListener("click",function () {
+            openPageWithData("manage_bluetooth_settings.html");
+        });
+        cvManageZoneOptions.addEventListener("click",function () {
+            openPageWithData("manage_zone_options.html");
+        });
+    }
+    function openPageWithData(pageUrl) {
+        if (selectedDevice !== null) {
+            var serializedDevice = encodeURIComponent(JSON.stringify(selectedDevice));
+            window.location.href = pageUrl + "?data=" + serializedDevice;
+        }else {
+            alert("لطفا ابتدا دستگاهی را ثبت نام کنید!");
+        }
+    }
+    function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    }
+    function SimDevice(name,phNumber){
+        this.name = name;
+        this.phNumber = phNumber;
+    }
+</script>
+</body>
+</html>

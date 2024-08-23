@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/app_styles.css">
+    <title>مدیریت کنترل خروجی</title>
+</head>
+<body>
+
+<div class="linear-layout-vertical">
+    <div style="margin-bottom: 30px" class="linear-layout-horizontal">
+        <div class="checkbox-container" id="con1" style="border: 1px solid white; border-radius: 20px; padding: 5px 2px; cursor: pointer; width: 150px; margin: 2px">
+            <input type="checkbox" id="chbCh1" class="custom-checkbox">
+            <label for="chbCh1" class="checkbox-label" style="text-align: center; cursor: pointer; font-weight: bold;">خروجی 1</label>
+        </div>
+        <div class="checkbox-container" id="con2" style="border: 1px solid white; border-radius: 20px; padding: 5px 2px; cursor: pointer; width: 150px; margin: 2px">
+            <input type="checkbox" id="chbCh2" class="custom-checkbox">
+            <label for="chbCh2" class="checkbox-label" style="text-align: center; cursor: pointer; font-weight: bold;">خروجی 2</label>
+        </div>
+    </div>
+    <div class="checkbox-container" id="container1" style="border: 1px solid white; border-radius: 5px; padding: 10px 5px; cursor: pointer;">
+        <input type="checkbox" id="momentaryStateChb" class="custom-checkbox">
+        <label for="momentaryStateChb" class="checkbox-label" style="text-align: center; cursor: pointer; font-weight: bold;">حالت لحظه ای</label>
+    </div>
+    <div class="checkbox-container" id="container2" style="border: 1px solid white; border-radius: 5px; padding: 10px 5px; cursor: pointer;">
+        <input type="checkbox" id="permanentStateChb" class="custom-checkbox">
+        <label for="permanentStateChb" class="checkbox-label" style="text-align: center; cursor: pointer; font-weight: bold;">حالت فعال یا غیرفعال دائم</label>
+    </div>
+    <div class="checkbox-container" id="container3" style="border: 1px solid white; border-radius: 5px; padding: 10px 5px; cursor: pointer;">
+        <input type="checkbox" id="powerOnOffStateChb" class="custom-checkbox">
+        <label for="powerOnOffStateChb" class="checkbox-label" style="text-align: center; cursor: pointer; font-weight: bold;">حالت قطع و وصل برق شهر</label>
+    </div>
+    <div class="checkbox-container" id="container4" style="border: 1px solid white; border-radius: 5px; padding: 10px 5px; cursor: pointer;">
+        <input type="checkbox" id="alarmStateChb" class="custom-checkbox">
+        <label for="alarmStateChb" class="checkbox-label" style="text-align: center; cursor: pointer; font-weight: bold;">حالت آلارم</label>
+    </div>
+    <button id="bSaveInciteState" class="button-type2" style="width: 300px;">ذخیره وضعیت</button>
+    <div class="checkbox-container" id="container5" style="border: 1px solid #000000; border-radius: 5px; padding: 5px; cursor: pointer; background-color: #fc0000; margin-top: 70px;">
+        <img src="../icons/ic_state_off.PNG" id="switchIcon" style="height: 30px; width: 30px;">
+        <label id="switchLabel" class="checkbox-label" style="text-align: center; cursor: pointer; font-weight: bold;">ارسال پیام عملکرد خروجی : غیرفعال</label>
+    </div>
+    <button id="bSaveSendSmsOutputState" class="button-type2" style="width: 300px;">ذخیره حالت ارسال پیام عملکرد خروجی</button>
+    <div class="linear-layout-horizontal" id="back_button" style="background-color: #fbcf1d; border-radius: 15px; margin-top: 50px; cursor: pointer;">
+        <img src="../icons/ic_arrow_back.png" alt="back_ic" style="width: 30px; margin-right: 5px;margin-left: 5px;">
+        <div class="text-view" style="color: white; margin-right: 8px;">بازگشت</div>
+    </div>
+</div>
+
+<script>
+    const channelSmsOnCmd = "chsms=on";
+    const channelSmsOffCmd = "chsms=off";
+    const channelOutputMomentaryCmd = "des1";
+    const channelOutputOnOffCmd = "des2";
+    const channelOutputPowerCmd = "des3";
+    const channelOutputAlarmCmd = "des4";
+    var selectedCh;
+
+    const momentaryStateChb = document.getElementById("momentaryStateChb");
+    const permanentStateChb = document.getElementById("permanentStateChb");
+    const powerOnOffStateChb = document.getElementById("powerOnOffStateChb");
+    const alarmStateChb = document.getElementById("alarmStateChb");
+    const containerSwitch = document.getElementById("container5");
+    const bSaveInciteState = document.getElementById("bSaveInciteState");
+    const bSaveSendSmsOutputState = document.getElementById("bSaveSendSmsOutputState");
+    const backButton = document.getElementById("back_button");
+
+    const chbCh1 = document.getElementById("chbCh1");
+    const chbCh2 = document.getElementById("chbCh2");
+    const con1 = document.getElementById("con1");
+    const con2 = document.getElementById("con2");
+
+    chbCh1.addEventListener("click",function () {
+        chbCh2.checked = false;
+        con1.style.backgroundColor = "#514FA1";
+        con2.style.backgroundColor = "";
+        bSaveInciteState.innerText = "ذخیره وضعیت خروجی 1";
+        selectedCh = 1;
+    });
+
+    chbCh2.addEventListener("click",function () {
+        chbCh1.checked = false;
+        con2.style.backgroundColor = "#514FA1";
+        con1.style.backgroundColor = "";
+        bSaveInciteState.innerText = "ذخیره وضعیت خروجی 2";
+        selectedCh = 2;
+    });
+    chbCh1.click();
+
+    var serializedDevice = getUrlParameter('data');
+    if (serializedDevice === "") {
+        window.location.href = "main_page.html";
+    }else {
+        var selectedDevice = JSON.parse(decodeURIComponent(serializedDevice));
+
+        var channelOutputCommand = "";
+        backButton.addEventListener("click",function () {
+            window.history.back();
+        });
+        document.getElementById("container1").addEventListener("click", function () {
+            momentaryStateChb.click();
+        });
+        document.getElementById("container2").addEventListener("click", function () {
+            permanentStateChb.click();
+        });
+        document.getElementById("container3").addEventListener("click", function () {
+            powerOnOffStateChb.click();
+        });
+        document.getElementById("container4").addEventListener("click", function () {
+            alarmStateChb.click();
+        });
+        momentaryStateChb.addEventListener("click", function () {
+            momentaryStateChb.checked = true;
+            permanentStateChb.checked = false;
+            powerOnOffStateChb.checked = false;
+            alarmStateChb.checked = false;
+            // containerSwitch.style.visibility = 'visible';
+            // bSaveSendSmsOutputState.style.visibility = 'visible';
+            channelOutputCommand = channelOutputMomentaryCmd;
+        });
+        permanentStateChb.addEventListener("click", function () {
+            momentaryStateChb.checked = false;
+            permanentStateChb.checked = true;
+            powerOnOffStateChb.checked = false;
+            alarmStateChb.checked = false;
+            // containerSwitch.style.visibility = 'visible';
+            // bSaveSendSmsOutputState.style.visibility = 'visible';
+            channelOutputCommand = channelOutputOnOffCmd;
+        });
+        powerOnOffStateChb.addEventListener("click", function () {
+            momentaryStateChb.checked = false;
+            permanentStateChb.checked = false;
+            powerOnOffStateChb.checked = true;
+            alarmStateChb.checked = false;
+            // containerSwitch.style.visibility = 'hidden';
+            // bSaveSendSmsOutputState.style.visibility = 'hidden';
+            channelOutputCommand = channelOutputPowerCmd;
+        });
+        alarmStateChb.addEventListener("click", function () {
+            momentaryStateChb.checked = false;
+            permanentStateChb.checked = false;
+            powerOnOffStateChb.checked = false;
+            alarmStateChb.checked = true;
+            // containerSwitch.style.visibility = 'hidden';
+            // bSaveSendSmsOutputState.style.visibility = 'hidden';
+            channelOutputCommand = channelOutputAlarmCmd;
+        });
+
+        var sendSmsOutput = false;
+
+        containerSwitch.addEventListener("click",function () {
+            sendSmsOutput = !sendSmsOutput;
+            if (sendSmsOutput === true){
+                containerSwitch.style.backgroundColor = "#00ff00";
+                document.getElementById("switchIcon").src = "../icons/ic_state_on.PNG";
+                document.getElementById("switchLabel").innerText = "ارسال پیام عملکرد خروجی : فعال";
+            }else {
+                containerSwitch.style.backgroundColor = "#ff0000";
+                document.getElementById("switchIcon").src = "../icons/ic_state_off.PNG";
+                document.getElementById("switchLabel").innerText = "ارسال پیام عملکرد خروجی : غیرفعال";
+            }
+        });
+        bSaveInciteState.addEventListener("click",function () {
+            if (channelOutputCommand === "") {
+                alert("لطفا یک حالت را برای وضعیت کنترل خروجی انتخاب نمایید.");
+            }else {
+                var result = confirm("آیا از تغییر وضعیت خروجی " + selectedCh + " مطمئن هستید؟");
+                if (result) {
+                    console.log("ch" + selectedCh +  channelOutputCommand);
+                    sendSMS(selectedDevice.phNumber, "ch" + selectedCh +  channelOutputCommand);
+                    alert("پیام ارسال گردید.");
+                }
+            }
+        });
+        bSaveSendSmsOutputState.addEventListener("click",function () {
+            var result = confirm("آیا مایل به تغییر وضعیت ارسال پیام عملکرد خروجی می باشید؟");
+            if (result) {
+                if (sendSmsOutput) {
+                    console.log(channelSmsOnCmd);
+                    sendSMS(selectedDevice.phNumber,channelSmsOnCmd);
+                } else {
+                    console.log(channelSmsOffCmd);
+                    sendSMS(selectedDevice.phNumber,channelSmsOffCmd);
+                }
+                alert("پیام ارسال گردید.");
+            }
+        });
+    }
+    function sendSMS(phoneNumber,messageBody) {
+        messageBody = "*" + messageBody + "#";
+        var encodedMessageBody = encodeURIComponent(messageBody);
+        var smsLink = 'sms:' + phoneNumber + '?body=' + encodedMessageBody;
+        window.location.href = smsLink;
+    }
+    function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    }
+    function SimDevice(name,phNumber){
+        this.name = name;
+        this.phNumber = phNumber;
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/app_styles.css">
+    <title>مدیریت زون ها</title>
+</head>
+<body>
+
+<div class="linear-layout-horizontal">
+    <div class="linear-layout-vertical">
+        <div class="text-view" id="showSettTv" style="text-align: center; margin-bottom: 10px">تنظیمات زون 1</div>
+        <div class="checkbox-container" id="container1" style="border: 1px solid white; border-radius: 5px; padding: 10px 5px; cursor: pointer;">
+            <input type="checkbox" id="chbZoneState" class="custom-checkbox">
+            <label for="chbZoneState" id="label1" class="checkbox-label" style="text-align: center; cursor: pointer; font-weight: bold;">وضعیت زون : غیرفعال</label>
+        </div>
+        <div class="checkbox-container" id="container2" style="border: 1px solid white; border-radius: 5px; padding: 10px 5px; cursor: pointer;">
+            <input type="checkbox" id="chbZone24hState" class="custom-checkbox">
+            <label for="chbZone24hState" id="label2" class="checkbox-label" style="text-align: center; cursor: pointer; font-weight: bold;">وضعیت حالت 24 ساعته : غیرفعال</label>
+        </div>
+        <div class="checkbox-container" id="container3" style="border: 1px solid white; border-radius: 5px; padding: 10px 5px; cursor: pointer;">
+            <input type="checkbox" id="chbZoneHalfOnState" class="custom-checkbox">
+            <label for="chbZoneHalfOnState" id="label3" class="checkbox-label" style="text-align: center; cursor: pointer; font-weight: bold;">وضعیت زون در حالت نیمه فعال : غیرفعال</label>
+        </div>
+        <div class="checkbox-container" id="container4" style="border: 1px solid white; border-radius: 5px; padding: 10px 5px; cursor: pointer;">
+            <input type="checkbox" id="chbZonePedal" class="custom-checkbox">
+            <label for="chbZonePedal" id="label4" class="checkbox-label" style="text-align: center; cursor: pointer; font-weight: bold;">حالت پدال : غیرفعال</label>
+        </div>
+        <div class="checkbox-container" id="container5" style="border: 1px solid white; border-radius: 5px; padding: 10px 5px; cursor: pointer;">
+            <input type="checkbox" id="chbZoneChime" class="custom-checkbox">
+            <label for="chbZoneChime" id="label5" class="checkbox-label" style="text-align: center; cursor: pointer; font-weight: bold;">وضعیت ملودی اعلام ورود (chime) : غیرفعال</label>
+        </div>
+        <div class="text-view" id="showAlarmSettTv" style="text-align: center; margin-bottom: 10px; margin-top: 10px">تنظیمات عملکرد زون 1 هنگام آلارم</div>
+        <div class="checkbox-container" id="container6" style="border: 1px solid white; border-radius: 5px; padding: 10px 5px; cursor: pointer;">
+            <input type="checkbox" id="chbZoneMakeAlarm" class="custom-checkbox">
+            <label for="chbZoneMakeAlarm" id="label6" class="checkbox-label" style="text-align: center; cursor: pointer; font-weight: bold;">ایجاد آژیر : غیرفعال</label>
+        </div>
+        <div class="checkbox-container" id="container7" style="border: 1px solid white; border-radius: 5px; padding: 10px 5px; cursor: pointer;">
+            <input type="checkbox" id="chbZoneMakeCall" class="custom-checkbox">
+            <label for="chbZoneMakeCall" id="label7" class="checkbox-label" style="text-align: center; cursor: pointer; font-weight: bold;">برقراری تماس : غیرفعال</label>
+        </div>
+        <div class="checkbox-container" id="container8" style="border: 1px solid white; border-radius: 5px; padding: 10px 5px; cursor: pointer;">
+            <input type="checkbox" id="chbZoneSendSms" class="custom-checkbox">
+            <label for="chbZoneSendSms" id="label8" class="checkbox-label" style="text-align: center; cursor: pointer; font-weight: bold;">ارسال پیامک : غیرفعال</label>
+        </div>
+        <div class="checkbox-container" id="container9" style="border: 1px solid white; border-radius: 5px; padding: 10px 5px; cursor: pointer;">
+            <input type="checkbox" id="chbZoneChannelOutput1" class="custom-checkbox">
+            <label for="chbZoneChannelOutput1" id="label9" class="checkbox-label" style="text-align: center; cursor: pointer; font-weight: bold;">خروجی کانال 1 : غیرفعال</label>
+        </div>
+        <div class="checkbox-container" id="container10" style="border: 1px solid white; border-radius: 5px; padding: 10px 5px; cursor: pointer;">
+            <input type="checkbox" id="chbZoneChannelOutput2" class="custom-checkbox">
+            <label for="chbZoneChannelOutput2" id="label10" class="checkbox-label" style="text-align: center; cursor: pointer; font-weight: bold;">خروجی کانال 2 : غیرفعال</label>
+        </div>
+        <button id="bApplyChanges" class="button-type1" style="width: 310px;">اعمال تغییرات</button>
+        <div class="linear-layout-horizontal">
+            <button id="bCodeWirelessZone" class="button-type2">کددهی زون بی سیم</button>
+            <button id="bRemoveWirelessZone" class="button-type2">حذف زون بی سیم</button>
+        </div>
+        <div class="linear-layout-horizontal" id="back_button" style="background-color: #fbcf1d; border-radius: 15px; margin-top: 50px; cursor: pointer;">
+            <img src="../icons/ic_arrow_back.png" alt="back_ic" style="width: 30px; margin-right: 5px;margin-left: 5px;">
+            <div class="text-view" style="color: white; margin-right: 8px;">بازگشت</div>
+        </div>
+    </div>
+    <select id="picker"></select>
+</div>
+
+<script>
+    const manageZoneCmd = "configz";
+    const removeWirelessZoneCmd = "wlclr";
+    const codingWirelessZoneCmd = "wlcode";
+
+    const picker = document.getElementById("picker");
+    // const container1 = document.getElementById("container1");
+    // const container2 = document.getElementById("container2");
+    // const container3 = document.getElementById("container3");
+    // const container4 = document.getElementById("container4");
+    const bCodeWirelessZone = document.getElementById("bCodeWirelessZone");
+    const bRemoveWirelessZone = document.getElementById("bRemoveWirelessZone");
+    const bApplyChanges = document.getElementById("bApplyChanges");
+    const chbZoneState = document.getElementById("chbZoneState");
+    const chbZone24hState = document.getElementById("chbZone24hState");
+    const chbZoneHalfOnState = document.getElementById("chbZoneHalfOnState");
+    const chbZoneChime = document.getElementById("chbZoneChime");
+    const chbZonePedal = document.getElementById("chbZonePedal");
+    const chbZoneMakeAlarm = document.getElementById("chbZoneMakeAlarm");
+    const chbZoneMakeCall = document.getElementById("chbZoneMakeCall");
+    const chbZoneSendSms = document.getElementById("chbZoneSendSms");
+    const chbZoneChannelOutput1 = document.getElementById("chbZoneChannelOutput1");
+    const chbZoneChannelOutput2 = document.getElementById("chbZoneChannelOutput2");
+    const label1 = document.getElementById("label1");
+    const label2 = document.getElementById("label2");
+    const label3 = document.getElementById("label3");
+    const label4 = document.getElementById("label4");
+    const label5 = document.getElementById("label5");
+    const label6 = document.getElementById("label6");
+    const label7 = document.getElementById("label7");
+    const label8 = document.getElementById("label8");
+    const label9 = document.getElementById("label9");
+    const label10 = document.getElementById("label10");
+    const backButton = document.getElementById("back_button");
+    const showSettTv = document.getElementById("showSettTv");
+    const showAlarmSettTv = document.getElementById("showAlarmSettTv");
+
+    var serializedDevice = getUrlParameter('data');
+    if (serializedDevice === "") {
+        window.location.href = "main_page.html";
+    }else {
+        var selectedDevice = JSON.parse(decodeURIComponent(serializedDevice));
+
+        const namesArray = ["زون 1", "زون 2", "زون 3", "زون 4", "زون بی سیم 1" , "زون بی سیم 2" , "زون بی سیم 3" ,"زون بی سیم 4"];
+        namesArray.forEach(function (name) {
+            //var is nonFinal and can be declared every time and are non-block-scoped
+            var option = document.createElement("option");
+            option.value = name;
+            option.text = name;
+            picker.add(option);
+        });
+        backButton.addEventListener("click",function () {
+            window.history.back();
+        });
+        chbZoneState.addEventListener("click",function () {
+            if (chbZoneState.checked){
+                label1.innerText = "وضعیت زون : فعال";
+            }else {
+                label1.innerText = "وضعیت زون : غیرفعال";
+            }
+        });
+        chbZone24hState.addEventListener("click",function () {
+            if (chbZone24hState.checked){
+                label2.innerText = "وضعیت حالت 24 ساعته : فعال";
+            }else {
+                label2.innerText = "وضعیت حالت 24 ساعته : غیرفعال";
+            }
+        });
+        chbZoneHalfOnState.addEventListener("click",function () {
+            if (chbZoneHalfOnState.checked){
+                label3.innerText = "وضعیت زون در حالت نیمه فعال : فعال";
+            }else {
+                label3.innerText = "وضعیت زون در حالت نیمه فعال : غیرفعال";
+            }
+        });
+        chbZonePedal.addEventListener("click",function () {
+            if (chbZonePedal.checked){
+                label4.innerText = "حالت پدال : فعال";
+            }else {
+                label4.innerText = "حالت پدال : غیرفعال";
+            }
+        });
+        chbZoneChime.addEventListener("click",function () {
+            if (chbZoneChime.checked){
+                label5.innerText = "وضعیت ملودی اعلام ورود (chime) : فعال";
+            }else {
+                label5.innerText = "وضعیت ملودی اعلام ورود (chime) : غیرفعال";
+            }
+        });
+
+        chbZoneMakeAlarm.addEventListener("click",function () {
+            if (chbZoneMakeAlarm.checked){
+                label6.innerText = "ایجاد آژیر : فعال";
+            }else {
+                label6.innerText = "ایجاد آژیر : غیرفعال";
+            }
+        });
+
+        chbZoneMakeCall.addEventListener("click",function () {
+            if (chbZoneMakeCall.checked){
+                label7.innerText = "برقراری تماس : فعال";
+            }else {
+                label7.innerText = "برقراری تماس : غیرفعال";
+            }
+        });
+
+        chbZoneSendSms.addEventListener("click",function () {
+            if (chbZoneSendSms.checked){
+                label8.innerText = "ارسال پیامک : فعال";
+            }else {
+                label8.innerText = "ارسال پیامک : غیرفعال";
+            }
+        });
+
+        chbZoneChannelOutput1.addEventListener("click",function () {
+            if (chbZoneChannelOutput1.checked){
+                label9.innerText = "خروجی کانال 1 : فعال";
+            }else {
+                label9.innerText = "خروجی کانال 1 : غیرفعال";
+            }
+        });
+
+        chbZoneChannelOutput2.addEventListener("click",function () {
+            if (chbZoneChannelOutput2.checked){
+                label10.innerText = "خروجی کانال 2 : فعال";
+            }else {
+                label10.innerText = "خروجی کانال 2 : غیرفعال";
+            }
+        });
+
+        makeViewGone(bCodeWirelessZone.id)
+        makeViewGone(bRemoveWirelessZone.id)
+
+        picker.addEventListener("change", function () {
+            const selectedIndex = picker.selectedIndex;
+            if (selectedIndex < 4){
+                showSettTv.innerText = "تنظیمات زون " + (selectedIndex + 1);
+                showAlarmSettTv.innerText = "تنظیمات عملکرد زون " + (selectedIndex + 1) + " هنگام آلارم";
+                makeViewGone(bCodeWirelessZone.id)
+                makeViewGone(bRemoveWirelessZone.id)
+            }else {
+                showSettTv.innerText = "تنظیمات زون بیسیم " + (selectedIndex - 3);
+                showAlarmSettTv.innerText = "تنظیمات عملکرد زون بیسیم " + (selectedIndex - 3) + " هنگام آلارم";
+                makeViewVisible(bCodeWirelessZone.id)
+                makeViewVisible(bRemoveWirelessZone.id)
+            }
+        });
+        bApplyChanges.addEventListener("click",function () {
+            const selectedIndex = picker.selectedIndex;
+            var result = confirm("آیا از اعمال تغییرات برای زون انتخابی مطمئن می باشید؟");
+            if (result) {
+                var x1, x2, x3, x4, x5, x6, x7, x8, x9, x10;
+                x1 = chbZoneState.checked ? '1' : '0';
+                x2 = chbZone24hState.checked ? '1' : '0';
+                x3 = chbZoneHalfOnState.checked ? '1' : '0';
+                x4 = chbZoneChime.checked ? '1' : '0';
+                x5 = chbZonePedal.checked ? '1' : '0';
+                x6 = chbZoneMakeAlarm.checked ? '1' : '0';
+                x7 = chbZoneSendSms.checked ? '1' : '0';
+                x8 = chbZoneMakeCall.checked ? '1' : '0';
+                x9 = chbZoneChannelOutput1.checked ? '1' : '0';
+                x10 = chbZoneChannelOutput2.checked ? '1' : '0';
+                console.log(manageZoneCmd + (selectedIndex + 1) + "=" + x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10);
+                sendSMS(selectedDevice.phNumber,manageZoneCmd + (selectedIndex + 1) + "=" + x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10);
+                alert("پیام ارسال گردید.");
+            }
+        });
+        bRemoveWirelessZone.addEventListener("click",function () {
+            const selectedIndex = picker.selectedIndex;
+            var result = confirm("آیا از حذف کد زون بی سیم " + (selectedIndex - 3) + " مطمئن می باشید؟");
+            if (result) {
+                console.log(removeWirelessZoneCmd + (selectedIndex - 3));
+                sendSMS(selectedDevice.phNumber,removeWirelessZoneCmd + (selectedIndex - 3));
+                alert("پیام ارسال گردید.");
+            }
+        });
+        bCodeWirelessZone.addEventListener("click",function () {
+            const selectedIndex = picker.selectedIndex;
+            var result = confirm("آیا از کددهی زون بی سیم " + (selectedIndex - 3) + " مطمئن می باشید؟");
+            if (result) {
+                console.log(codingWirelessZoneCmd + (selectedIndex - 3));
+                sendSMS(selectedDevice.phNumber,codingWirelessZoneCmd + (selectedIndex - 3));
+                alert("پیام ارسال گردید.");
+            }
+        });
+    }
+    function makeViewGone(viewId) {
+        var view = document.getElementById(viewId);
+        view.classList.add("hidden");
+    }
+    function makeViewVisible(viewId) {
+        var view = document.getElementById(viewId);
+        view.classList.remove("hidden");
+    }
+    function sendSMS(phoneNumber,messageBody) {
+        messageBody = "*" + messageBody + "#";
+        var encodedMessageBody = encodeURIComponent(messageBody);
+        var smsLink = 'sms:' + phoneNumber + '?body=' + encodedMessageBody;
+        window.location.href = smsLink;
+    }
+    function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    }
+    function SimDevice(name,phNumber){
+        this.name = name;
+        this.phNumber = phNumber;
+    }
+</script>
+
+</body>
+</html>

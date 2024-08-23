@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/app_styles.css">
+    <title>تنظیم زمان آژیر</title>
+</head>
+<body>
+
+<div class="linear-layout-vertical">
+    <div class="text-view" style="margin-bottom: 10px; color: white">پس از تنظیم مدت زمان تک آژیر،بر روی ذخیره کلیک کنید</div>
+    <div class="linear-layout-horizontal-custom">
+        <div class="linear-layout-vertical">
+            <div class="number-picker">
+                <button class="np-button" id="bIncrementMillieSec">+</button>
+                <input class="np-input" id="inputMillieSec" type="number" value="0" min="0" max="240">
+                <button class="np-button" id="bDecrementMillieSec">-</button>
+            </div>
+            <div class="text-view3">
+                <p>میلی ثانیه</p>
+            </div>
+        </div>
+    </div>
+    <button id="bSaveAlarmTime" class="button-type2">ذخیره زمان تک آژیر</button>
+    <div class="linear-layout-horizontal" id="back_button" style="background-color: #fbcf1d; border-radius: 15px; margin-top: 50px; cursor: pointer;">
+        <img src="../icons/ic_arrow_back.png" alt="back_ic" style="width: 30px; margin-right: 5px;margin-left: 5px;">
+        <div class="text-view" style="color: white; margin-right: 8px;">بازگشت</div>
+    </div>
+</div>
+
+<script>
+const setAlarmLevelCmd = "alarmlevel=";
+
+const bIncrementMillieSec = document.getElementById("bIncrementMillieSec");
+const bDecrementMillieSec = document.getElementById("bDecrementMillieSec");
+const inputMillieSec = document.getElementById("inputMillieSec");
+const bSaveAlarmTime = document.getElementById("bSaveAlarmTime");
+const backButton = document.getElementById("back_button");
+
+var serializedDevice = getUrlParameter('data');
+if (serializedDevice === "") {
+    window.location.href = "main_page.html";
+}else {
+    var selectedDevice = JSON.parse(decodeURIComponent(serializedDevice));
+
+    backButton.addEventListener("click",function () {
+        window.history.back();
+    });
+    bIncrementMillieSec.addEventListener("click", function () {
+        if (parseInt(inputMillieSec.value) < 240) {
+            inputMillieSec.value = parseInt(inputMillieSec.value) + 1;
+        }
+    });
+    bDecrementMillieSec.addEventListener("click", function () {
+        if (parseInt(inputMillieSec.value) > 0) {
+            inputMillieSec.value = parseInt(inputMillieSec.value) - 1;
+        }
+    });
+    bSaveAlarmTime.addEventListener("click",function () {
+        const alarmLevel = parseInt(inputMillieSec.value);
+        if (alarmLevel === 0){
+            alert("مدت زمان تک آژیر نمی تواند 0 ثانیه باشد!");
+        }else{
+            var result = confirm("آیا از تغییر مدت زمان تک آژیر مطمئن هستید؟");
+            if (result) {
+                console.log(setAlarmLevelCmd + alarmLevel);
+                sendSMS(selectedDevice.phNumber,setAlarmLevelCmd + alarmLevel);
+                alert("پیام ارسال گردید.");
+            }
+        }
+    });
+}
+function sendSMS(phoneNumber,messageBody) {
+    messageBody = "*" + messageBody + "#";
+    var encodedMessageBody = encodeURIComponent(messageBody);
+    var smsLink = 'sms:' + phoneNumber + '?body=' + encodedMessageBody;
+    window.location.href = smsLink;
+}
+function getUrlParameter(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, ' '));
+}
+function SimDevice(name,phNumber){
+    this.name = name;
+    this.phNumber = phNumber;
+}
+</script>
+
+</body>
+</html>
